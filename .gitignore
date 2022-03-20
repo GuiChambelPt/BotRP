@@ -1,2 +1,4 @@
 .env
 /test2/*.py
+*.pyc
+/cogs/__pychache__/
