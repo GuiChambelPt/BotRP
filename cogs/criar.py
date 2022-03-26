@@ -76,7 +76,7 @@ class Criar(commands.Cog):
                 "message", check=lambda message: message.author == member
             )
             if "sim" in confirmmessage.content:
-                post = {"_id": id1,"Nome": nome, "Sobrenome": sobrenome, "Idade": idade, "Emprego": empregopadrao, "Dinheiro":500}
+                post = {"_id": id1,"Nome": nome, "Sobrenome": sobrenome, "Idade": idade, "Emprego": "Desempregado", "Dinheiro":500,"Estado-Civil": "Solteiro","Casadocom": None,"BankAccount": False, "BankAccountMoney": 0, "inventario":''}
                 collection.insert_one(post)
                 await ctx.send('Personagem Criado')
             if "nao" in confirmmessage.content:
@@ -84,7 +84,7 @@ class Criar(commands.Cog):
         else:    
             await ctx.send("Conta ja criada")
     @commands.command()
-    async def infopersonagem(self, ctx, user = None):
+    async def infopersonagem(self, ctx, user: discord.Member=None):
         if user == None:
             user = str(ctx.author.id)
             userfinal1 = user.replace('<', '')
@@ -92,6 +92,8 @@ class Criar(commands.Cog):
             userfinal3 = userfinal2.replace('@', '')
             userfinal = userfinal3.replace('>', '')
             user = userfinal
+        else:
+            user = str(user.id)
         id1 = str(ctx.author.id)
         db = cluster["DiscordBot"]
         collection = db["Users"]
