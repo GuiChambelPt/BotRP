@@ -2,6 +2,7 @@ import discord
 import os
 from discord.ext import commands
 import pymongo
+import datetime
 from pymongo import MongoClient
 from dotenv import load_dotenv
 load_dotenv()
@@ -76,7 +77,9 @@ class Criar(commands.Cog):
                 "message", check=lambda message: message.author == member
             )
             if "sim" in confirmmessage.content:
-                post = {"_id": id1,"Nome": nome, "Sobrenome": sobrenome, "Idade": idade, "Emprego": "Desempregado", "Dinheiro":500,"Estado-Civil": "Solteiro","Casadocom": None,"BankAccount": False, "BankAccountMoney": 0, "inventario":''}
+                x = datetime.datetime.now()
+                data = x.strftime('%H:%M:%S %d-%m-%Y')
+                post = {"_id": id1,"Nome": nome, "Sobrenome": sobrenome, "Idade": idade, "Emprego": "Desempregado", "Dinheiro":500,"Estado-Civil": "Solteiro", "Datadacriacao":data,"Casadocom": None,"BankAccount": False, "BankAccountMoney": 0, "inventario":''}
                 collection.insert_one(post)
                 await ctx.send('Personagem Criado')
             if "nao" in confirmmessage.content:
