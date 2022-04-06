@@ -1,5 +1,5 @@
 .env
-/test2/*.py
+/test/*.py
 *.pyc
 /cogs/__pychache__/
 .gitignore

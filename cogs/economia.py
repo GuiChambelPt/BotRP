@@ -41,33 +41,40 @@ class Economia(commands.Cog):
                         await ctx.send('Acabando trabalho')
                         trabalhar1 = False
 
-    # @commands.command()
-    # async def banco(self, ctx):
-    #     db = cluster["DiscordBot"]
-    #     collection = db["Users"]
-    #     id1 = str(ctx.author.id)
-    #     results1 = collection.find_one({"_id": id1})
-    #     if results1 == None:
-    #         await ctx.send('Primeiro crie um personagem')
-    #     else:
-    #         results1 = collection.find_one({"_id": id1,"BankAccount": False})
-    #         if results1 == None:
-    #             message = await ctx.send("Voce nao tem uma conta deseja criar uma?")
-    #             await message.add_reaction("✅")
-    #             await message.add_reaction("❌")
-    #             check = lambda r, u: u == ctx.author and str(r.emoji) in "✅❌"  # r=reaction, u=user
-    #             try:
-    #                 reaction, user = await self.client.wait_for("reaction_add", check=check, timeout=30)
-    #             except asyncio.TimeoutError:
-    #                 await message.edit(content="Voce demorou demais timeout!")
-    #             return
-    #         if str(reaction.emoji) == "✅":
-    #             await message.edit("Prefixo alterado para {}!!!".format(newprefix))
-    #             collection.update_one({"_id": guild}, {"$set":{"Prefix":newprefix}})
-    #         if str(reaction.emoji) == "❌":
-    #             await message.edit(content="Ok cancelado")
-    #         else:
-    #         await ctx.send('')
+
+
+    @commands.command()
+    async def banco(self, ctx):
+        db = cluster["DiscordBot"]
+        collection = db["Users"]
+        id1 = str(ctx.author.id)
+        results1 = collection.find_one({"_id": id1})
+        print(results1)
+        if results1 == None:
+            await ctx.send('Primeiro crie um personagem')
+        else:
+            results1 = collection.find_one({"_id": id1})
+            bankaccount = results1("BankAccount")
+            if results1 == False:
+                message = await ctx.send("Voce nao tem uma conta deseja criar uma(custa 1000$)")
+                await message.add_reaction("✅")
+                await message.add_reaction("❌")
+                check = lambda r, u: u == ctx.author and str(r.emoji) in "✅❌"  # r=reaction, u=user
+                try:
+                    reaction, user = await self.client.wait_for("reaction_add", check=check, timeout=30)
+                except asyncio.TimeoutError:
+                    await message.edit(content="Voce demorou demais timeout!")
+                    return
+                if str(reaction.emoji) == "✅":
+                    results2 = collection.find_one({"_id": id1})
+                    dinheiro = results2("Dinheiro")
+                    print(dinheiro)
+
+                    await message.edit("Conta criada com sucesso".format())
+                if str(reaction.emoji) == "❌":
+                    await message.edit(content="Ok cancelado")
+            else:
+                await ctx.send('VOce ja tem uma conta')
 
         
 
