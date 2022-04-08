@@ -53,6 +53,20 @@ class Economia(commands.Cog):
         if results1 == None:
             await ctx.send('Primeiro crie um personagem')
         else:
+            embedbank = discord.Embed(
+                title="Banco ",
+                colour=discord.Colour(0x33DDFF),
+            )
+            embedbank.add_field(
+                name="",
+                value="💵-Para ver quanto dinheiro tem \n 💳-Para criar um cartao de credito",
+                inline=False
+            )
+            embedbank.set_footer(
+                text=f"Solicitado por {ctx.author.name}",
+                icon_url=f"{ctx.author.avatar_url}")
+            await ctx.reply(embed=embedbank)
+
             results1 = collection.find_one({"_id": id1})
             bankaccount = results1("BankAccount")
             if results1 == False:
