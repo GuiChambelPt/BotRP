@@ -53,27 +53,63 @@ class Economia(commands.Cog):
         if results1 == None:
             await ctx.send('Primeiro crie um personagem')
         else:
+            results1 = collection.find_one({"_id": id1}, {"BankAccount": 'True'})
+            bankaccount = results1['BankAccount']
+            if results1 == None:
+                embedbank = discord.Embed(
+                title="Banco ",
+                colour=discord.Colour(0x33DDFF),
+                )
+                embedbank.add_field(
+                    name="Cenas",
+                    value="💵-Para ver quanto dinheiro tem \n💳-Para criar um cartao de credito \n📜-Para ver os extra",
+                    inline=False
+                )
+                embedbank.set_footer(
+                    text=f"Solicitado por {ctx.author.name}",
+                    icon_url=f"{ctx.author.avatar_url}")
+                message = await ctx.send(embed=embedbank)
+                embedbank = discord.Embed(
+                    title="Banco",
+                    description="Voce nao tem uma conta deseja criar uma?",
+                    colour=discord.Colour(0x33DDFF),
+                )
+                embedbank.set_footer(
+                    text=f"Solicitado por {ctx.author.name}",
+                    icon_url=f"{ctx.author.avatar_url}")
+                message = await ctx.send(embed=embedbank)
+                await message.add_reaction("✅")
+                await message.add_reaction("❌")
+            
+            embedbank = discord.Embed(
+                title="Banco ",
+                colour=discord.Colour(0x33DDFF),
+                )
+            embedbank.add_field(
+                    name="Cenas",
+                    value="💵-Para ver quanto dinheiro tem \n💳-Para criar um cartao de credito \n📜-Para ver os extra",
+                    inline=False
+            )
+            embedbank.set_footer(
+                    text=f"Solicitado por {ctx.author.name}",
+                    icon_url=f"{ctx.author.avatar_url}")
+            message = await ctx.send(embed=embedbank)
             embedbank = discord.Embed(
                 title="Banco ",
                 colour=discord.Colour(0x33DDFF),
             )
             embedbank.add_field(
-                name="",
-                value="💵-Para ver quanto dinheiro tem \n 💳-Para criar um cartao de credito",
-                inline=False
+                    name="Cenas",
+                    value="💵-Para ver quanto dinheiro tem \n💳-Para criar um cartao de credito \n📜-Para ver os extra",
+                    inline=False
             )
             embedbank.set_footer(
-                text=f"Solicitado por {ctx.author.name}",
-                icon_url=f"{ctx.author.avatar_url}")
-            await ctx.reply(embed=embedbank)
-
-            results1 = collection.find_one({"_id": id1})
-            bankaccount = results1("BankAccount")
-            if results1 == False:
-                message = await ctx.send("Voce nao tem uma conta deseja criar uma(custa 1000$)")
-                await message.add_reaction("✅")
-                await message.add_reaction("❌")
-                check = lambda r, u: u == ctx.author and str(r.emoji) in "✅❌"  # r=reaction, u=user
+                    text=f"Solicitado por {ctx.author.name}",
+                    icon_url=f"{ctx.author.avatar_url}")
+            message = await ctx.send(embed=embedbank)
+            await message.add_reaction("💳")
+            await message.add_reaction("📜")
+            check = lambda r, u: u == ctx.author and str(r.emoji) in "✅❌"  # r=reaction, u=user
                 try:
                     reaction, user = await self.client.wait_for("reaction_add", check=check, timeout=30)
                 except asyncio.TimeoutError:
@@ -87,10 +123,16 @@ class Economia(commands.Cog):
                     await message.edit("Conta criada com sucesso".format())
                 if str(reaction.emoji) == "❌":
                     await message.edit(content="Ok cancelado")
-            else:
-                await ctx.send('VOce ja tem uma conta')
 
-        
+            results1 = collection.find_one({"_id": id1}, {"BankAccount": 'True'})
+            print(type(results1))
+            bankaccount = results1['BankAccount']
+            if results1 == False:
+                message = await ctx.send("Voce nao tem uma conta deseja criar uma(custa 1000$)")
+                await message.add_reaction("✅")
+                await message.add_reaction("❌")
+                
+
 
 def setup(client):
     client.add_cog(Economia(client))
